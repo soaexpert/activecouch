@@ -81,7 +81,9 @@ describe "ActiveCouch::Base #find method with no params passed" do
     Object.send(:remove_const, :Person)
   end
   
-  it "should return all documents if passed :all, with no params specified"
+  it "should return all documents if passed :all, with no params specified" do
+    pending
+  end
 end
 
 
