@@ -152,7 +152,7 @@ module ActiveCouch
       end
       response = connection.delete("/#{self.class.database_name}/#{id}?rev=#{rev}")
       # Set the id and rev to nil, since the object has been successfully deleted from CouchDB
-      if response.code == '202'
+      if response.code == '200'
         self.id = nil; self.rev = nil
         true
       else
@@ -408,7 +408,7 @@ module ActiveCouch
         end
         response = connection.delete("/#{self.database_name}/#{options[:id]}?rev=#{options[:rev]}")
         # Returns true if the 
-        response.code == '202'
+        response.code == '200'
       end
 
       # Defines an "attribute" method. A new (class) method will be created with the

@@ -10,7 +10,7 @@ describe "ActiveCouch::Migration #view_js method" do
   end
   
   it "should generate the correct javascript to be used in the view" do
-    (ByName.view_js =~ /map\(doc\.name, doc\);/).should_not == nil
+    (ByName.view_js =~ /emit\(doc\.name, doc\);/).should_not == nil
   end
 end
 
@@ -25,7 +25,7 @@ describe "ActiveCouch::Migration #view_js method while calling the with_key and 
   end
   
   it "should generate the correct javascript to be used in the view" do
-    (ByLatitude.view_js =~ /map\(doc\.latitude, doc\);/).should_not == nil
+    (ByLatitude.view_js =~ /emit\(doc\.latitude, doc\);/).should_not == nil
     (ByLatitude.view_js =~ /if\(doc\.name == \\"Hilton\\"\)/).should_not == nil
   end
 end
@@ -41,6 +41,6 @@ describe "A subclass of ActiveCouch::Migration while calling with_key and includ
   end
 
   it "should generate the correct javascript which will be used in the permanent view" do
-    (ByLongitude.view_js =~ /map\(doc\.latitude, \{name: doc\.name , rating: doc\.rating , latitude: doc\.latitude , longitude: doc\.longitude , address: doc\.address\}\);/).should_not == nil
+    (ByLongitude.view_js =~ /emit\(doc\.latitude, \{name: doc\.name , rating: doc\.rating , latitude: doc\.latitude , longitude: doc\.longitude , address: doc\.address\}\);/).should_not == nil
   end
 end

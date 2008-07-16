@@ -38,8 +38,8 @@ module ActiveCouch
       end
       
       def view_js
-        results_hash = {"_id" => "_design/#{@view}", "language" => "text/javascript"}
-        results_hash["views"] =  { @view => view_function }
+        results_hash = {"_id" => "_design/#{@view}", "language" => "javascript"}
+        results_hash["views"] =  { @view => {'map' => view_function } }
         # Returns the JSON format for the function
         results_hash.to_json
       end
@@ -65,7 +65,7 @@ private
 
         js = "function(doc) { "
         js << "if(#{@filter}) { " if filter_present
-        js << "map(doc.#{@key}, #{include_attrs});"
+        js << "emit(doc.#{@key}, #{include_attrs});"
         js << " } " if filter_present
         js << " }"
         
