@@ -27,10 +27,19 @@ describe "A subclass of ActiveCouch::Base with a has_many association" do
   it "should have accessors to associated objects" do
     @c.should respond_to(:people)
     @p1.should respond_to(:contact)
+    @p1.should respond_to(:contact=)
   end
   
-  it "should have a method called people which returns an empty array" do
+  it "should have an accessor on the container side which returns an empty array" do
     @c.people.should == []
+  end
+  
+  it "should have an accessor on the item side which returns the container" do
+    pending
+    Contact.should_receive(:find).with('id-of-contact').and_return(@c)
+    @c.id = 'id-of-contact'
+    @c.people << @p1
+    @p1.contact.should == @c
   end
   
   it "should be able to add a Person object to the association" do

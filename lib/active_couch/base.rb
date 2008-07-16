@@ -47,15 +47,20 @@ module ActiveCouch
       # Then, initialize all the associations
       klass_assocs.each_key do |k|
         @associations[k] = klass_assocs[k]
-        self.instance_eval "def #{k}; @#{k} ||= []; end"
+        self.instance_eval "def #{k}; @#{k} ||= []; end" # insert loads of funk here
 
+        # Also, set up reverse associations
         container = self.class
+        @associations[k].send :has, "#{self.class.to_s.downcase}_id", :which_is => :text do
+          instance_variable_get("@#{container.to_s.downcase}_id")
+        end
+        
         @associations[k].send :define_method, self.class.to_s.downcase do
-          container.find "@#{container.to_s.downcase}_id"
+          container.find(instance_variable_get("@#{container.to_s.downcase}_id"))
         end
 
-        @associations[k].send :define_method, "#{self.class.to_s.downcase}=" do
-          'bye!'
+        @associations[k].send :define_method, "#{self.class.to_s.downcase}=" do |value|
+          instance_variable_set("@#{container.to_s.downcase}_id", value.id)
         end
 
       end
