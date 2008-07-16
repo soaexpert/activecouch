@@ -26,9 +26,10 @@ describe "A subclass of ActiveCouch::Base with a belongs_to association" do
     Object.send(:remove_const, :Article)
   end
   
-  it "should have an instance variable called associations which is a Hash with the key being :people" do
-    Article.associations.class.should == Hash
-    Article.associations.keys.should == [:author]
+  it "should have an instance variable called associations, which is a hash of association-name-to-class pairs" do
+    Article.associations.should be_kind_of(Hash)
+    Article.associations.keys.should include(:author)
+    Article.associations[:author].should == Author
   end
   
   it "should have getters and setters for association" do
