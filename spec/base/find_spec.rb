@@ -26,8 +26,8 @@ describe "ActiveCouch::Base #find method with an object which has associations" 
     ActiveCouch::Migrator.migrate('http://localhost:5984', ByTitle)
     blog = Blog.new(:title => 'iPhone in Singapore')
     # Associations
-    blog.add_comment(Comment.new(:body => 'soon plz'))
-    blog.add_comment(Comment.new(:body => 'ya rly!'))
+    blog.comments << Comment.new(:body => 'soon plz')
+    blog.comments << Comment.new(:body => 'ya rly!')
     # Save the blog
     blog.save
   end

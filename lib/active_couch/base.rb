@@ -48,9 +48,6 @@ module ActiveCouch
       klass_assocs.each_key do |k|
         @associations[k] = klass_assocs[k]
         self.instance_eval "def #{k}; @#{k} ||= []; end"
-        # If you have has_many :people, this will add a method called add_person
-        # to the object instantiated from the class
-        self.instance_eval "def add_#{k.singularize}(val); @#{k} = #{k} << val; end"
       end
       # Finally, all the calbacks      
       klass_callbacks.each_key do |k|
@@ -554,7 +551,7 @@ module ActiveCouch
           if value.is_a?(Array) && !(child_klass = @associations[property]).nil?
             value.each do |child|
               child.is_a?(Hash) ? child_obj = child_klass.new(child) : child_obj = child
-              self.send "add_#{property.to_s.singularize}", child_obj
+              self.send(property).send(:<<, child_obj)
             end
           # This means a has_one association            
           elsif value.is_a?(Hash) && !(child_klass = @associations[property]).nil?

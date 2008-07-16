@@ -47,8 +47,8 @@ describe "ActiveCouch::Base #marshal_dump with associations" do
     @h1 = Hospital.new(:name => "Crazy Hospital 1")
     @h2 = Hospital.new(:name => "Crazy Hospital 2")
 
-    @c.add_hospital(@h1)
-    @c.add_hospital(@h2)
+    @c.hospitals << @h1
+    @c.hospitals << @h2
   end
 
   after(:each) do

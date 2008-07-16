@@ -33,7 +33,6 @@ describe "A class which is a subclass of ActiveCouch::Base with a has_many assoc
   
   it "should have methods called people and add_person" do
     @c.should respond_to(:people)
-    @c.should respond_to(:add_person)
   end
   
   it "should have a method called people which returns an empty array" do
@@ -41,7 +40,7 @@ describe "A class which is a subclass of ActiveCouch::Base with a has_many assoc
   end
   
   it "should be able to add a Person object to the association" do
-    @c.add_person(@p1)
+    @c.people << @p1
     @c.people.should == [@p1]
   end
   
