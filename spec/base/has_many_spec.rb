@@ -1,14 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-describe "A class which is a subclass of ActiveCouch::Base with a has_many association" do
+describe "A subclass of ActiveCouch::Base with a has_many association" do
   before(:each) do
     class Person < ActiveCouch::Base
       has :name, :which_is => :text
-    end
-
-    class AgedPerson < ActiveCouch::Base
-      has :name
-      has :age, :which_is => :number, :with_default_value => 10
     end
 
     class Contact < ActiveCouch::Base
@@ -17,12 +12,10 @@ describe "A class which is a subclass of ActiveCouch::Base with a has_many assoc
     
     @c = Contact.new
     @p1 = Person.new
-    @a1 = AgedPerson.new
   end
   
   after(:each) do
     Object.send(:remove_const, :Person)
-    Object.send(:remove_const, :AgedPerson)
     Object.send(:remove_const, :Contact)
   end  
   
@@ -31,8 +24,9 @@ describe "A class which is a subclass of ActiveCouch::Base with a has_many assoc
     Contact.associations.keys.should == [:people]
   end
   
-  it "should have methods called people and add_person" do
+  it "should have accessors to associated objects" do
     @c.should respond_to(:people)
+    @p1.should respond_to(:contact)
   end
   
   it "should have a method called people which returns an empty array" do

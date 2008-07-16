@@ -48,6 +48,16 @@ module ActiveCouch
       klass_assocs.each_key do |k|
         @associations[k] = klass_assocs[k]
         self.instance_eval "def #{k}; @#{k} ||= []; end"
+
+        container = self.class
+        @associations[k].send :define_method, self.class.to_s.downcase do
+          container.find "@#{container.to_s.downcase}_id"
+        end
+
+        @associations[k].send :define_method, "#{self.class.to_s.downcase}=" do
+          'bye!'
+        end
+
       end
       # Finally, all the calbacks      
       klass_callbacks.each_key do |k|
