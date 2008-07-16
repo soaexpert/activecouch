@@ -286,6 +286,7 @@ module ActiveCouch
       #     has_many :people # which will create an empty array which can contain 
       #                      # Person objects
       #   end
+      #
       def has_many(name, options = {})
         unless name.is_a?(String) || name.is_a?(Symbol)
           raise ArgumentError, "#{name} is neither a String nor a Symbol"
@@ -294,20 +295,24 @@ module ActiveCouch
         @associations[name] = get_klass(name, options)
       end
 
-      # Defines a single object which is a 'child' of this class. The has_one
-      # function guesses the class of the child, based on the name of the association,
+      # Defines an object which is the 'parent' of this class. The belongs_to
+      # function guesses the class of the parent, based on the name of the association,
       # but can be over-ridden by the :class key in the options hash.
       # 
       # Examples:
       #
-      #   class Child < ActiveCouch::Base
-      #     has :name
+      #   class Article < ActiveCouch::Base
+      #     has :title, :which_is => :text
+      #     has :body, :which_is => :text
+      #     belongs_to :author
       #   end
       #
-      #   class GrandParent < ActiveCouch::Base
-      #     has_one :child
+      #   class Author < ActiveCouch::Base
+      #     has :name, :which_is => :text
+      #     has_many :articles
       #   end
-      def has_one(name, options = {})
+      #
+      def belongs_to(name, options = {})
         unless name.is_a?(String) || name.is_a?(Symbol)
           raise ArgumentError, "#{name} is neither a String nor a Symbol"
         end
