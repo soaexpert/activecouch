@@ -51,10 +51,8 @@ module ActiveCouch
 
         # Also, set up reverse associations
         container = self.class
-        @associations[k].send :has, "#{self.class.to_s.downcase}_id", :which_is => :text do
-          instance_variable_get("@#{container.to_s.downcase}_id")
-        end
-        
+        @associations[k].send :has, "#{container.to_s.downcase}_id", :which_is => :text
+                
         @associations[k].send :define_method, self.class.to_s.downcase do
           container.find(instance_variable_get("@#{container.to_s.downcase}_id"))
         end
